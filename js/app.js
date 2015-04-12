@@ -1,4 +1,6 @@
 $(function() {
+	var pages = ['dashboard', 'overview', 'key-features', 'industry-applications', 'technical-info', 'faq'];
+
 	showPage(window.location.hash);
 
 	$(window).on('hashchange', function(){
@@ -6,6 +8,12 @@ $(function() {
 	});
 
 	function showPage(newPage) {
+		console.log($.inArray(newPage, pages));
+
+		if ($.inArray(newPage, pages) == -1) {
+			window.location.hash = '#dashboard';
+		}
+
 		$('.page').removeClass('visible').addClass('hidden');
 		$(newPage).removeClass('hidden').addClass('visible');
 
