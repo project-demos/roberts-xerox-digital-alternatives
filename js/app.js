@@ -1,5 +1,5 @@
 $(function() {
-	var pages = ['dashboard', 'overview', 'key-features', 'industry-applications', 'technical-info', 'faq'];
+	var pages = ['#dashboard', '#overview', '#key-features', '#industry-applications', '#technical-info', '#faq'];
 
 	showPage(window.location.hash);
 
