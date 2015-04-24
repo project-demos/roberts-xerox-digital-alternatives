@@ -21,6 +21,20 @@ $(function() {
 			var slider = $(this).parent().parent().attr('id');
 			sliders[slider].next();
 		});
+
+		$('.grid-item').on('click', function() {
+			$('#faq .content-top').hide();
+			$('.grid-item').removeClass('active');
+			$(this).addClass('active');
+
+			var question = $(this).attr('data-question');
+			if (question !== '' && question !== undefined) {
+				$('.answer').hide();
+				$($('.answer')[question-1]).show();
+				//$('#faq .content-top').show();
+				$('#faq .content-top').show("slide", { direction: "down" }, 300);
+			}
+		});
 	});
 
 	var pages = ['#dashboard', '#overview', '#key-features', '#industry-applications', '#technical-info', '#faq'];
