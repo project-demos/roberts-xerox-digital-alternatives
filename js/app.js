@@ -11,6 +11,8 @@ $(function() {
 
 		sliders['overview'] = $("#slider-overview").data('owlCarousel');
 		sliders['key-features'] = $("#slider-features").data('owlCarousel');
+		sliders['industry-applications'] = $("#slider-industry").data('owlCarousel');
+		sliders['technical-info'] = $("#slider-tech").data('owlCarousel');
 
 		$('.slider-prev').on('click', function() {
 			var slider = $(this).parent().parent().attr('id');
@@ -33,6 +35,7 @@ $(function() {
 				$($('.answer')[question-1]).show();
 				//$('#faq .content-top').show();
 				$('#faq .content-top').show("slide", { direction: "down" }, 300);
+				$('html, body').animate({ scrollTop: 0 }, 'slow');
 			}
 		});
 	});
@@ -46,31 +49,12 @@ $(function() {
 	});
 
 	function showPage(newPage) {
-
 		if ($.inArray(newPage, pages) == -1) {
 			window.location.hash = '#dashboard';
 		}
 
 		$('.page').removeClass('visible').addClass('hidden');
 		$(newPage).removeClass('hidden').addClass('visible');
-
-		/*var map = {
-			'overview': function() {
-
-			},
-			'key-features': function() {
-
-			},
-			'industry-applications': function() {
-
-			},
-			'technical-info': function() {
-
-			},
-			'faq': function() {
-
-			}
-		};*/
 	}// showPage()
 
 });
