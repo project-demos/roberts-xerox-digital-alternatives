@@ -490,7 +490,7 @@ footer a {
 .slider-arrow {
     position: absolute;
     top: 45%;
-    font-size: 48px;
+    font-size: 45px;
     font-weight: bold;
     z-index: 999;
     cursor: pointer;
@@ -498,9 +498,9 @@ footer a {
 }
 
 .slider-prev {
-    left: 15px;
+    left: 11px;
 }
 
 .slider-next {
-    right: 15px;
+    right: 11px;
 }
