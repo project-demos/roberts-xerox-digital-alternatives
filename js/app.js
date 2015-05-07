@@ -34,8 +34,6 @@ $(function() {
 	var sliders = {};
 
 	$(document).ready(function() {
-		showPage(window.location.hash);
-
 		$(".owl-carousel").owlCarousel({
 			slideSpeed : 300,
 			rewindNav : false,
@@ -43,10 +41,20 @@ $(function() {
 			singleItem:true
 		});
 
+		$(".owl-carousel-video").owlCarousel({
+			slideSpeed : 300,
+			rewindNav : false,
+			paginationSpeed : 400,
+			singleItem:true,
+			pagination: false
+		});
+
 		sliders['overview'] = $("#slider-overview").data('owlCarousel');
 		sliders['key-features'] = $("#slider-features").data('owlCarousel');
 		sliders['industry-applications'] = $("#slider-industry").data('owlCarousel');
 		sliders['technical-info'] = $("#slider-tech").data('owlCarousel');
+
+		showPage(window.location.hash);
 
 		$('.slider-prev').on('click', function() {
 			var sliderId = $(this).parent().parent().attr('id');
@@ -54,6 +62,14 @@ $(function() {
 
 			if (slider.currentItem !== 0) {
 				slider.prev();
+
+				if (slider.currentItem == 0) {
+					$('#'+sliderId+' .slider-prev').hide();
+				}
+				else if (slider.currentItem == (slider.maximumItem-1)) {
+					$('#'+sliderId+' .slider-next').show();
+				}
+
 				changeTitle(sliderId, slider.currentItem);
 			}
 		});
@@ -64,8 +80,24 @@ $(function() {
 
 			if (slider.currentItem !== slider.maximumItem) {
 				slider.next();
+
+				if (slider.currentItem == 1) {
+					$('#'+sliderId+' .slider-prev').show();
+				}
+				else if (slider.currentItem == slider.maximumItem) {
+					$('#'+sliderId+' .slider-next').hide();
+				}
+
 				changeTitle(sliderId, slider.currentItem);
 			}
+
+		});
+
+		$('.slider-nav-item').on('click', function() {
+			var slideNum = $(this).attr('data-slide');
+			var sliderId = $(this).attr('data-slider');
+
+			sliders[sliderId].goTo(slideNum);
 		});
 
 		$('.grid-item').on('click', function() {
@@ -77,12 +109,43 @@ $(function() {
 			if (question !== '' && question !== undefined) {
 				$('.answer').hide();
 				$($('.answer')[question-1]).show();
-				//$('#faq .content-top').show();
-				$('#faq .content-top').show("slide", { direction: "down" }, 300);
+
+				$('#faq .content-top').show();
+				//$('#faq .content-top').show("slide", { direction: "down" }, 300);
+
+				//fix height
+				checkHeight();
+
+
 				$('html, body').animate({ scrollTop: 0 }, 'slow');
 			}
 		});
+
+		$(window).on('resize', checkHeight);
 	});
+
+	function checkHeight() {
+		var answerHeight = $('#faq .answers').css('height');
+		answerHeight = parseInt(answerHeight.substring(0, answerHeight.length-2)) + ($('body').width()*.035);
+		var topContentHeight = $('#faq .content-top').height();
+
+		//console.log(answerHeight);
+
+		if (answerHeight > topContentHeight) {
+			$('#faq .content-top').height(answerHeight+'px');
+			$('#faq .content').css('top', answerHeight+'px');
+		}
+		else {
+			if (answerHeight > $(window).height()*.4) {
+				$('#faq .content-top').height(answerHeight+'px');
+				$('#faq .content').css('top', answerHeight+'px');
+			}
+			else {
+				$('#faq .content-top').height('40%');
+				$('#faq .content').css('top', '40%');
+			}
+		}
+	}
 
 	function changeTitle(page, slideNum) {
 		//console.log('page ' +page+ ' - slide '+slideNum);
@@ -109,6 +172,17 @@ $(function() {
 		//$(newPage).show("slide", { direction: "right" }, 500);*/
 
 		$(currentPage).hide();
+
+		// reset slider for new page
+		var pageId = newPage.substring(1,newPage.length);
+		if (pageId !== 'dashboard' && pageId !== 'faq') {
+			sliders[pageId].jumpTo(0);
+			$(newPage+' .slider-prev').hide();
+			$(newPage+' .slider-next').show();
+			changeTitle(pageId, 0);
+		}
+
+
 		$(newPage).show();
 
 		currentPage = newPage;
