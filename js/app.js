@@ -1,8 +1,8 @@
 var currentPage = '#dashboard';
 var sliderTitles = {
 	'overview': {
-		0: 'Overview',
-		1: 'Overview',
+		0: 'Overview<a class="next-page" href="#key-features">Continue to Key Features &#187;</a>',
+		1: 'Overview<a class="next-page" href="#key-features">Continue to Key Features &#187;</a>',
 		2: 'Overview<a class="next-page" href="#key-features">Continue to Key Features &#187;</a>'
 	},
 	'key-features': {
