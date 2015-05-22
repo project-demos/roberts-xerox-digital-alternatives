@@ -37,7 +37,8 @@ $(function() {
 			slideSpeed : 300,
 			rewindNav : false,
 			paginationSpeed : 400,
-			singleItem:true
+			singleItem:true,
+			afterMove: updateSlider
 		});
 
 		$(".owl-carousel-video").owlCarousel({
@@ -58,38 +59,13 @@ $(function() {
 		$('.slider-prev').on('click', function() {
 			var sliderId = $(this).parent().parent().attr('id');
 			var slider = sliders[sliderId];
-
-			if (slider.currentItem !== 0) {
-				slider.prev();
-
-				if (slider.currentItem == 0) {
-					$('#'+sliderId+' .slider-prev').hide();
-				}
-				else if (slider.currentItem == (slider.maximumItem-1)) {
-					$('#'+sliderId+' .slider-next').show();
-				}
-
-				changeTitle(sliderId, slider.currentItem);
-			}
+			slider.prev();
 		});
 
 		$('.slider-next').on('click', function() {
 			var sliderId = $(this).parent().parent().attr('id');
 			var slider = sliders[sliderId];
-
-			if (slider.currentItem !== slider.maximumItem) {
-				slider.next();
-
-				if (slider.currentItem == 1) {
-					$('#'+sliderId+' .slider-prev').show();
-				}
-				else if (slider.currentItem == slider.maximumItem) {
-					$('#'+sliderId+' .slider-next').hide();
-				}
-
-				changeTitle(sliderId, slider.currentItem);
-			}
-
+			slider.next();
 		});
 
 		$('.slider-nav-item').on('click', function() {
@@ -122,6 +98,29 @@ $(function() {
 
 		$(window).on('resize', checkHeight);
 	});
+
+	function updateSlider() {
+		var sliderId = $(this.$elem[0]).attr('data-page');
+		var slider = sliders[sliderId];
+		var $prevButton = $('#'+sliderId+' .slider-prev');
+		var $nextButton = $('#'+sliderId+' .slider-next');
+
+		if (slider.currentItem == 0) {
+			$prevButton.hide();
+			$nextButton.show();
+		}
+		else if (slider.currentItem == slider.maximumItem) {
+			$nextButton.hide();
+			$prevButton.show();
+		}
+		else {
+			$nextButton.show();
+			$prevButton.show();
+		}
+
+		changeTitle(sliderId, slider.currentItem);
+
+	}
 
 	function checkHeight() {
 		var answerHeight = $('#faq .answers').css('height');
