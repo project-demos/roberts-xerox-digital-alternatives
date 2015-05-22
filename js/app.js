@@ -11,8 +11,7 @@ var sliderTitles = {
 		2: 'Key Features > Read and Review',
 		3: 'Key Features > Annotate and Comment',
 		4: 'Key Features > Complete and Sign a Form',
-		5: 'Key Features > Share',
-		6: 'Key Features > Sync Across Devices<a class="next-page" href="#industry-applications">Continue to Industry Applications &#187;</a>'
+		5: 'Key Features > Share<a class="next-page" href="#industry-applications">Continue to Industry Applications &#187;</a>',
 	},
 	'industry-applications': {
 		0: 'Industry Applications > Education',
