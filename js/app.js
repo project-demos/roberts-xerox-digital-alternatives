@@ -1,4 +1,5 @@
 var currentPage = '#dashboard';
+var pages = ['#dashboard', '#overview', '#key-features', '#industry-applications', '#technical-info', '#faq'];
 var sliderTitles = {
 	'overview': {
 		0: 'Overview<a class="next-page" href="#key-features">Continue to Key Features &#187;</a>',
@@ -33,6 +34,7 @@ $(function() {
 	var sliders = {};
 
 	$(document).ready(function() {
+		//initialize page sliders
 		$(".owl-carousel").owlCarousel({
 			slideSpeed : 300,
 			rewindNav : false,
@@ -41,6 +43,7 @@ $(function() {
 			afterMove: updateSlider
 		});
 
+		//initialize video slider
 		$(".owl-carousel-video").owlCarousel({
 			slideSpeed : 300,
 			rewindNav : false,
@@ -49,6 +52,7 @@ $(function() {
 			pagination: false
 		});
 
+		//store slider instances
 		sliders['overview'] = $("#slider-overview").data('owlCarousel');
 		sliders['key-features'] = $("#slider-features").data('owlCarousel');
 		sliders['industry-applications'] = $("#slider-industry").data('owlCarousel');
@@ -56,18 +60,21 @@ $(function() {
 
 		showPage(window.location.hash);
 
+		//slider navigation - previous
 		$('.slider-prev').on('click', function() {
 			var sliderId = $(this).parent().parent().attr('id');
 			var slider = sliders[sliderId];
 			slider.prev();
 		});
 
+		//slider navigation - next
 		$('.slider-next').on('click', function() {
 			var sliderId = $(this).parent().parent().attr('id');
 			var slider = sliders[sliderId];
 			slider.next();
 		});
 
+		//slider navigation - video thumbnails
 		$('.slider-nav-item').on('click', function() {
 			var slideNum = $(this).attr('data-slide');
 			var sliderId = $(this).attr('data-slider');
@@ -75,6 +82,7 @@ $(function() {
 			sliders[sliderId].goTo(slideNum);
 		});
 
+		// FAQ click functionality
 		$('.grid-item').on('click', function() {
 			$('#faq .content-top').hide();
 			$('.grid-item').removeClass('active');
@@ -86,19 +94,34 @@ $(function() {
 				$($('.answer')[question-1]).show();
 
 				$('#faq .content-top').show();
-				//$('#faq .content-top').show("slide", { direction: "down" }, 300);
 
-				//fix height
 				checkHeight();
-
 
 				$('html, body').animate({ scrollTop: 0 }, 'slow');
 			}
 		});
 
+		// Industry Applications Nav
+		$('#industry-applications .section-nav-link').on('click', function() {
+			var slideNum = $(this).attr('data-slide');
+			sliders['industry-applications'].goTo(slideNum);
+		});
+
+		// Navigation
+		$('#btn-nav').on('click', function() {
+			//$('#popup-menu').toggle('slide', {direction: 'down', easing: 'easeInQuad'}, 600);
+			$('#popup-menu').slideToggle();
+		});
+
+		$('#popup-menu .menu-item-link').on('click', function() {
+			$('#popup-menu').hide();
+		});
+
 		$(window).on('resize', checkHeight);
 	});
 
+	// changes slider section title
+	// hide/show navigation arrows
 	function updateSlider() {
 		var sliderId = $(this.$elem[0]).attr('data-page');
 		var slider = sliders[sliderId];
@@ -122,12 +145,11 @@ $(function() {
 
 	}
 
+	// fixes top section height for FAQ answers
 	function checkHeight() {
 		var answerHeight = $('#faq .answers').css('height');
 		answerHeight = parseInt(answerHeight.substring(0, answerHeight.length-2)) + ($('body').width()*.035);
 		var topContentHeight = $('#faq .content-top').height();
-
-		//console.log(answerHeight);
 
 		if (answerHeight > topContentHeight) {
 			$('#faq .content-top').height(answerHeight+'px');
@@ -145,29 +167,25 @@ $(function() {
 		}
 	}
 
+	// changes the title of given page based on current slide
 	function changeTitle(page, slideNum) {
-		//console.log('page ' +page+ ' - slide '+slideNum);
 		var $title = $('#'+page+' .title');
 
 		$title.html(sliderTitles[page][slideNum]);
-
 	}
 
-	var pages = ['#dashboard', '#overview', '#key-features', '#industry-applications', '#technical-info', '#faq'];
-
+	// listen for page change
 	$(window).on('hashchange', function(){
 		showPage(window.location.hash);
 	});
 
+	// if page is valid, show page
+	// else, show dashboard
 	function showPage(newPage) {
 		if ($.inArray(newPage, pages) == -1) {
 			window.location.hash = '#dashboard';
 			return false;
 		}
-
-		/*$(newPage).show().css('z-index', '1');
-		$(currentPage).css('z-index', '9999').hide("slide", { direction: "left" }, 1000);
-		//$(newPage).show("slide", { direction: "right" }, 500);*/
 
 		$(currentPage).hide();
 
