@@ -182,6 +182,8 @@ $(function() {
 	// if page is valid, show page
 	// else, show dashboard
 	function showPage(newPage) {
+		$('#popup-menu').hide();
+
 		if ($.inArray(newPage, pages) == -1) {
 			window.location.hash = '#dashboard';
 			return false;
